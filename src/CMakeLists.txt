@@ -12,6 +12,7 @@ target_include_directories(vstouch PRIVATE
 target_link_libraries(vstouch PRIVATE
   vslib.lib
 )
+file(COPY vslib/vslib.dll DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 set(targets vstouch)
 foreach(target ${targets})

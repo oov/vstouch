@@ -29,6 +29,7 @@ cd ..
 
 rm -rf bin/vstouch.exe
 cp build/src/vstouch.exe bin/vstouch.exe
+cp build/src/vslib.dll bin/vslib.dll
 
 cd bin
 zip vstouch_wip.zip vstouch.txt vstouch.exe
