@@ -1,0 +1,6 @@
+.vscode
+src/ver.h
+src/vslib/
+bin/
+build/
+VERSION
