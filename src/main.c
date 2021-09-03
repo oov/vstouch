@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -85,26 +86,50 @@ bool get_wave_format(char *path, struct file_format *ff) {
 
 int main(int argc, char *argv[])
 {
-  if (argc != 5) {
+  float speed = 1.f;
+  float pitch = 1.f;
+  char *infile = NULL;
+  char *outfile = NULL;
+  char *p;
+  for (int i = 1; i < argc; ++i) {
+    if (strcmp(argv[i], "-pitch") == 0 && i + 1 < argc) {
+      pitch = strtof(argv[++i], &p);
+      if (p == argv[i]) {
+        printf("-pitch paremeter is invalid.\n");
+        return 1;
+      }
+      continue;
+    }
+    if (strcmp(argv[i], "-speed") == 0 && i + 1 < argc) {
+      speed = strtof(argv[++i], &p);
+      if (p == argv[i]) {
+        printf("-speed paremeter is invalid.\n");
+        return 1;
+      }
+      continue;
+    }
+    if (infile == NULL) {
+      infile = argv[i];
+      continue;
+    }
+    if (outfile == NULL) {
+      outfile = argv[i];
+      continue;
+    }
+  }
+  if (infile == NULL || outfile == NULL) {
     printf("vstouch %s\n", VERSION);
     printf("\n");
     printf("USAGE:\n");
-    printf("  vstouch speed pitch infile outfile\n");
+    printf("  vstouch [options] infile outfile\n");
+    printf("\n");
+    printf("OPTIONS:\n");
+    printf("  -speed 1\n");
+    printf("    change speed\n");
+    printf("  -pitch 1\n");
+    printf("    change pitch\n");
     return 1;
   }
-  char *p;
-  float speed = strtof(argv[1], &p);
-  if (p == argv[1]) {
-    printf("speed is invalid.\n");
-    return 1;
-  }
-  float pitch = strtof(argv[2], &p);
-  if (p == argv[2]) {
-    printf("pitch is invalid.\n");
-    return 1;
-  }
-  char *infile = argv[3];
-  char *outfile = argv[4];
 
   struct file_format ff = { 0 };
   if (!get_wave_format(infile, &ff)) {
